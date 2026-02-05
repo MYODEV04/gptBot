@@ -128,9 +128,7 @@ export default function Page() {
         </section>
       )}
 
-      <footer className="footer">
-        API 키는 GitHub에 올리지 말고, Vercel Environment Variables에 넣어야 안전합니다.
-      </footer>
+    
     </main>
   );
 }
