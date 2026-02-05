@@ -4,9 +4,15 @@ import { useMemo, useState } from "react";
 
 export default function Page() {
   const [grade, setGrade] = useState("GEM MT 10");
-  const [name, setName] = useState("GENGAR HOLO");
+
+  // ✅ 카드 이름 (name) / setter는 setCardName 으로 변경
+  const [cardName, setCardName] = useState("GENGAR HOLO");
+
   const [year, setYear] = useState("1997");
-  const [setName, setSetName] = useState("POKEMON JAPANESE FOSSIL");
+
+  // ✅ 세트 이름은 setName 대신 setLabel로 헷갈리지 않게 변경
+  const [setLabel, setSetLabel] = useState("POKEMON JAPANESE FOSSIL");
+
   const [currency, setCurrency] = useState("JPY");
 
   const [loading, setLoading] = useState(false);
@@ -15,8 +21,8 @@ export default function Page() {
   const [error, setError] = useState("");
 
   const example = useMemo(
-    () => `예: ${grade} / ${name} / ${year} / ${setName}`,
-    [grade, name, year, setName]
+    () => `예: ${grade} / ${cardName} / ${year} / ${setLabel}`,
+    [grade, cardName, year, setLabel]
   );
 
   async function onSubmit(e: React.FormEvent) {
@@ -30,7 +36,13 @@ export default function Page() {
       const res = await fetch("/api/price", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ grade, name, year, setName, currency }),
+        body: JSON.stringify({
+          grade,
+          name: cardName,     // ✅ 서버는 name 필드를 기대하니 여기서 매핑
+          year,
+          setName: setLabel,  // ✅ 서버는 setName 필드를 기대하니 여기서 매핑
+          currency,
+        }),
       });
 
       const data = await res.json();
@@ -52,7 +64,7 @@ export default function Page() {
       <header className="header">
         <h1>🃏 Pokémon Card Price (Vercel + OpenAI)</h1>
         <p className="sub">
-          입력값을 기반으로 웹에서 최근 판매완료(sold/completed) 근거를 찾아 시세를 요약합니다.
+          입력값을 기반으로 GPT가 웹에서 최근 판매완료(sold/completed) 근거를 찾아 시세를 요약합니다.
         </p>
       </header>
 
@@ -65,7 +77,7 @@ export default function Page() {
 
           <label className="field">
             <span>Name</span>
-            <input value={name} onChange={(e) => setName(e.target.value)} required />
+            <input value={cardName} onChange={(e) => setCardName(e.target.value)} required />
           </label>
 
           <label className="field">
@@ -75,7 +87,7 @@ export default function Page() {
 
           <label className="field">
             <span>Set</span>
-            <input value={setName} onChange={(e) => setSetName(e.target.value)} />
+            <input value={setLabel} onChange={(e) => setSetLabel(e.target.value)} />
           </label>
 
           <label className="field">
@@ -117,8 +129,9 @@ export default function Page() {
       )}
 
       <footer className="footer">
-       
+        API 키는 GitHub에 올리지 말고, Vercel Environment Variables에 넣어야 안전합니다.
       </footer>
     </main>
   );
 }
+
