@@ -64,7 +64,7 @@ export default function Page() {
       <header className="header">
         <h1>🃏 Pokémon Card Price (Vercel + OpenAI)</h1>
         <p className="sub">
-          입력값을 기반으로 GPT가 웹에서 최근 판매완료(sold/completed) 근거를 찾아 시세를 요약합니다.
+          입력값을 기반으로 웹에서 최근 판매완료(sold/completed) 근거를 찾아 시세를 요약합니다.
         </p>
       </header>
 
@@ -108,8 +108,7 @@ export default function Page() {
           <b>에러</b>
           <div className="mono">{error}</div>
           <div className="small">
-            • Vercel에 OPENAI_API_KEY를 넣었는지 확인<br />
-            • web_search 도구가 비활성인 계정이면 “가격 API → GPT 정리” 방식으로 변경 필요
+            • 오류가 발생하였습니다. 잠시 후 다시 시도해주세요. <br />
           </div>
         </section>
       )}
